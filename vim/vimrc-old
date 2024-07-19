@@ -1,0 +1,324 @@
+" http://fisadev.github.io/fisa-vim-config/
+" version: 8.3.1
+
+let vim_plug_just_installed = 0
+let vim_plug_path = expand('~/.vim/autoload/plug.vim')
+if !filereadable(vim_plug_path)
+    echo "Installing Vim-plug..."
+    echo ""
+    silent !mkdir -p ~/.vim/autoload
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    let vim_plug_just_installed = 1
+endif
+
+if vim_plug_just_installed
+    :execute 'source '.fnameescape(vim_plug_path)
+endif
+
+call plug#begin('~/.vim/plugged')
+
+" Override configs by directory
+Plug 'arielrossanigo/dir-configs-override.vim'
+" Better file browser (F3)
+Plug 'scrooloose/nerdtree'
+" Code commenter (leader + ci)
+Plug 'scrooloose/nerdcommenter'
+" Class/module browser
+Plug 'majutsushi/tagbar'
+" Code and files fuzzy finder
+Plug 'ctrlpvim/ctrlp.vim'
+" Extension to ctrlp, for fuzzy command finder
+Plug 'fisadev/vim-ctrlp-cmdpalette'
+" Tab list panel
+Plug 'kien/tabman.vim'
+" Airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Pending tasks list
+Plug 'fisadev/FixedTaskList.vim'
+" Autoclose
+Plug 'Townk/vim-autoclose'
+" Python autocompletion, go to definition.
+Plug 'davidhalter/jedi-vim'
+" Better autocompletion
+Plug 'Shougo/neocomplcache.vim'
+"Plug 'Valloric/YouCompleteMe'
+
+" Snippets manager (SnipMate), dependencies, and snippets repo
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'honza/vim-snippets'
+Plug 'garbas/vim-snipmate'
+
+" Git/mercurial/others diff icons on the side of the file lines
+Plug 'mhinz/vim-signify'
+" Automatically sort python imports
+Plug 'fisadev/vim-isort'
+" Drag visual blocks arround
+Plug 'fisadev/dragvisuals.vim'
+" Window chooser
+Plug 't9md/vim-choosewin'
+" Python and other languages code checker
+"Plug 'scrooloose/syntastic'
+Plug 'lilydjwg/colorizer'
+" Ack code search (requires ack installed in the system)
+Plug 'mileszs/ack.vim'
+" Yank history navigation
+Plug 'vim-scripts/YankRing.vim'
+
+Plug 'ronakg/quickr-cscope.vim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'rafi/awesome-vim-colorschemes'
+
+call plug#end()
+
+if vim_plug_just_installed
+    echo "Installing Bundles, please ignore key map error messages"
+    :PlugInstall
+endif
+
+
+
+" ============================================================================
+
+let mapleader = ","
+set nocompatible
+
+filetype plugin on
+filetype indent on
+
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set ls=2
+set incsearch
+set hlsearch
+set scrolloff=3
+set nu
+syntax on
+
+" tab navigation mappings
+map tn :tabn<CR>
+map tp :tabp<CR>
+map tm :tabm
+map tt :tabnew
+map ts :tab split<CR>
+map <C-S-Right> :tabn<CR>
+"imap <C-S-Right> <ESC>:tabn<CR>
+map <C-S-Left> :tabp<CR>
+"imap <C-S-Left> <ESC>:tabp<CR>
+
+" old autocomplete keyboard shortcut
+imap <C-J> <C-X><C-O>
+
+" Comment this line to enable autocompletion preview window
+" (displays documentation related to the selected completion option)
+" Disabled by default because preview makes the window flicker
+set completeopt-=preview
+
+" save as sudo
+ca w!! w !sudo tee "%"
+
+" simple recursive grep
+nmap ,r :Ack 
+nmap ,wr :Ack <cword><CR>
+
+
+" autocompletion of files and commands behaves like shell
+" (complete only the common part, list the options that match)
+set wildmode=list:longest
+
+" better backup, swap and undos storage
+set directory=~/.vim/dirs/tmp     " directory to place swap files in
+set backup                        " make backup files
+set backupdir=~/.vim/dirs/backups " where to put backup files
+set undofile                      " persistent undos - undo after you re-open the file
+set undodir=~/.vim/dirs/undos
+set viminfo+=n~/.vim/dirs/viminfo
+
+let g:yankring_history_dir = '~/.vim/dirs/'
+
+" create needed directories if they don't exist
+if !isdirectory(&backupdir)
+    call mkdir(&backupdir, "p")
+endif
+if !isdirectory(&directory)
+    call mkdir(&directory, "p")
+endif
+if !isdirectory(&undodir)
+    call mkdir(&undodir, "p")
+endif
+
+
+
+" Tagbar -----------------------------
+map <F4> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
+
+
+" NERDTree -----------------------------
+map <F3> :NERDTreeToggle<CR>
+"nmap ,t :NERDTreeFind<CR>
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+
+
+" Tasklist ------------------------------
+map <F2> :TaskList<CR>
+
+map <F8> :set invnumber<CR>
+
+
+" CtrlP ------------------------------
+let g:ctrlp_map = ',e'
+" tags (symbols) in current file finder mapping
+nmap ,g :CtrlPBufTag<CR>
+" tags (symbols) in all files finder mapping
+nmap ,G :CtrlPBufTagAll<CR>
+" general code finder in all files mapping
+nmap ,f :CtrlPLine<CR>
+" recent files finder mapping
+nmap ,m :CtrlPMRUFiles<CR>
+" commands finder mapping
+nmap ,c :CtrlPCmdPalette<CR>
+" to be able to call CtrlP with default search text
+function! CtrlPWithSearchText(search_text, ctrlp_command_end)
+    execute ':CtrlP' . a:ctrlp_command_end
+    call feedkeys(a:search_text)
+endfunction
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
+  \ 'file': '\.pyc$\|\.pyo$',
+  \ }
+
+
+" Syntastic ------------------------------
+nmap <leader>E :Errors<CR>
+let g:syntastic_check_on_open = 1
+" don't put icons on the sign column (it hides the vcs status icons of signify)
+let g:syntastic_enable_signs = 1
+" custom icons (enable them if you use a patched font, and enable the previous
+" setting)
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_style_error_symbol = '✗'
+let g:syntastic_style_warning_symbol = '⚠'
+
+
+" Jedi-vim ------------------------------
+" All these mappings work only for python code:
+" Go to definition
+let g:jedi#goto_command = ',d'
+" Find ocurrences
+let g:jedi#usages_command = ',o'
+" Find assignments
+let g:jedi#goto_assignments_command = ',a'
+" Go to definition in new tab
+nmap ,D :tab split<CR>:call jedi#goto()<CR>
+
+
+" NeoComplCache ------------------------------
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_ignore_case = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_enable_auto_select = 1
+let g:neocomplcache_enable_fuzzy_completion = 1
+let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_fuzzy_completion_start_length = 1
+let g:neocomplcache_auto_completion_start_length = 1
+let g:neocomplcache_manual_completion_start_length = 1
+let g:neocomplcache_min_keyword_length = 1
+let g:neocomplcache_min_syntax_length = 1
+let g:neocomplcache_same_filetype_lists = {}
+let g:neocomplcache_same_filetype_lists._ = '_'
+
+
+" TabMan ------------------------------
+let g:tabman_toggle = 'tl'
+let g:tabman_focus  = 'tf'
+
+
+" Autoclose ------------------------------
+" Fix to let ESC work as espected with Autoclose plugin
+let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
+
+
+" DragVisuals ------------------------------
+" mappings to move blocks in 4 directions
+vmap <expr> <S-M-LEFT> DVB_Drag('left')
+vmap <expr> <S-M-RIGHT> DVB_Drag('right')
+vmap <expr> <S-M-DOWN> DVB_Drag('down')
+vmap <expr> <S-M-UP> DVB_Drag('up')
+" mapping to duplicate block
+vmap <expr> D DVB_Duplicate()
+
+
+" Signify ------------------------------
+" this first setting decides in which order try to guess your current vcs
+" UPDATE it to reflect your preferences, it will speed up opening files
+let g:signify_vcs_list = [ 'git', 'hg' ]
+" mappings to jump to changed blocks
+nmap <leader>sn <plug>(signify-next-hunk)
+nmap <leader>sp <plug>(signify-prev-hunk)
+" nicer colors
+highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
+highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
+
+" Window Chooser ------------------------------
+nmap  -  <Plug>(choosewin)
+" show big letters
+let g:choosewin_overlay_enable = 1
+
+
+" Airline ------------------------------
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'bubblegum'
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'default'
+"let g:airline#extensions#tabline#fnamemod = ':t'          " vim-airline 버퍼 목록 파일명만 출력
+let g:airline#extensions#tabline#buffer_nr_show = 1 " show buffer number
+let g:airline#extensions#tabline#buffer_nr_format = '%s:' " buffer number format
+
+
+" Youcompleteme ------------------------------------
+"let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_global_conf.py'
+"let g:ycm_show_diagnostics_ui = 1
+"let g:ycm_server_use_vim_stdout = 1
+"let g:ycm_server_log_level = 'debug'
+
+
+" Buffer move ------------------------------------------
+" 다음 버퍼로 이동
+nmap <leader>l :bnext<CR>
+" 이전 버퍼로 이동
+nmap <leader>h :bprevious<CR>
+" 현재 버퍼를 닫고 이전 버퍼로 이동
+" 탭 닫기 단축키를 대체한다.
+nmap <leader>bq :bp <BAR> bd #<CR>
+" 모든 버퍼와 각 버퍼 상태 출력
+nmap <leader>bl :ls<CR>
+
+
+" Custom settings -------------------------------
+let g:one_allow_italics = 1
+set cursorline
+set termguicolors
+colorscheme minho
+
+" Uncomment the following to have Vim jump to the last position when
+" reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
+endif
