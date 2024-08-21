@@ -1,0 +1,2 @@
+adb logcat -v time | grep -vE \
+	"Mfc|InputMethod|ALSA|HarmanHal|HomeScreen|ContextThemeWrapper|GMMfc|ResourceType|TunerSvc|Nxp|InputDispatcher|Broadcast|SettingProvidor|TimeView|Health|Rsip|Radio|GMBugReport|Widget|gm.media.internals|GM_ADB|RSIP|PMSvc|MMService|vip2nav|diagnostics|Audio|Thermal|telenav|Naboo|Dirana|DateAndTime|Demo|MicHealthStatusMsgSender|Internet|System.err|native_diagnostics|wpa_supplicant|Wifi|lvds|PHX|pulseaudio|GPTP|NxpTml|IPC|chatty|Tethering|mdns|wifi|FSA|a2bSvc|GMStatusBar|GMEthMgr|ViewRootImpl|OnStarFunctionsService|OnStar"

@@ -1,0 +1,2 @@
+#!/bin/sh
+grep --color=always -n "$1" `find . -name "$2"`

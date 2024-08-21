@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+import os
+def file_change(f, orig_str, dest_str):
+	# backup
+	i = open(f)
+	content = i.read()
+	i.close()
+
+	new_content = content.replace(orig_str, dest_str)
+	o = open(f + '.new', 'w')
+	o.write(new_content)
+	o.close()
+
+	os.system('mv %s %s' % (f, f + '.orig'))
+	os.system('mv %s %s' % (f + '.new', f))
+
+
+import sys
+if len(sys.argv) < 3:
+	print 'filechange2 orig-value dest-value file1 file2 ...'
+	sys.exit()
+
+orig = sys.argv[1]
+dest = sys.argv[2]
+
+print 'orig:', orig
+print 'dest:', dest
+print 'argv:', sys.argv
+
+for f in sys.argv[3:]:
+	file_change(f, orig, dest)

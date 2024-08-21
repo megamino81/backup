@@ -1,0 +1,3 @@
+unset SSH_SOCKS_SERVER GIT_PROXY_COMMAND
+unset http_proxy https_proxy socks_proxy ftp_proxy no_proxy
+unset HTTP_PROXY HTTPS_PROXY SOCKS_PROXY FTP_PROXY NO_PROXY

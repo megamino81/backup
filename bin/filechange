@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+import os
+def file_change(file, orig_str, dest_str):
+	cmd = 'perl -pi -e "s/%s/%s/g" ' % (orig_str, dest_str)
+	cmd += file
+	os.system(cmd)
+
+import sys
+if len(sys.argv) < 3:
+	print 'filechange orig-value dest-value file1 file2 ...'
+	sys.exit()
+
+orig = sys.argv[1]
+dest = sys.argv[2]
+
+for f in sys.argv[3:]:
+	file_change(f, orig, dest)
