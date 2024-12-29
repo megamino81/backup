@@ -24,3 +24,5 @@ export PATH=$HOME/bin:$PATH
 export USE_CCACHE=1
 export EDITOR=vim
 export VISUAL=vim
+
+PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]\$\[\033[0m\] '
