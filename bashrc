@@ -8,15 +8,15 @@ alias ff="find . -name"
 alias ts="ctags * -R"
 
 alias grep="grep --color=always --exclude=tags -n"
+#alias dmesg="sudo dmesg --color=auto --reltime --human --nopager --decode"
+#alias free="free -mht"
 
 alias ls='ls --color'
 alias la='ls --color -l'
 alias ll='ls --color -la'
 alias lh='ls --color -lh'
 
-
-#export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-#export PATH=$JAVA_HOME/bin:$PATH
+alias tree="tree --dirsfirst -C"
 
 export PYTHONSTARTUP=~/.pythonrc
 export PATH=$HOME/bin:$PATH
@@ -24,7 +24,6 @@ export PATH=$HOME/bin:$PATH
 export USE_CCACHE=1
 export EDITOR=vim
 export VISUAL=vim
-
 
 #export TERM=xterm-color
 #export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
