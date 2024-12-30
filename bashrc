@@ -19,7 +19,7 @@ alias lh='ls --color -lh'
 alias tree="tree --dirsfirst -C"
 
 export PYTHONSTARTUP=~/.pythonrc
-export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:$HOME/github/backup/bin:$PATH
 
 export USE_CCACHE=1
 export EDITOR=vim
@@ -50,4 +50,4 @@ export COLOR_LIGHT_GRAY='\e[0;37m'
 export COLOR_WHITE='\e[1;37m'
 
 #PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]\$\[\033[0m\] '
-PS1="\[${COLOR_CYAN}\]\u\[${COLOR_LIGHT_GRAY}\]@\[${COLOR_LIGHT_GRAY}\]\h:\[${COLOR_LIGHT_BLUE}\]\w\[${COLOR_LIGHT_GRAY}\]\$\[${COLOR_NC}\] "
+#PS1="\[${COLOR_CYAN}\]\u\[${COLOR_LIGHT_GRAY}\]@\[${COLOR_LIGHT_GRAY}\]\h:\[${COLOR_LIGHT_BLUE}\]\w\[${COLOR_LIGHT_GRAY}\]\$\[${COLOR_NC}\] "
