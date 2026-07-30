@@ -1,0 +1,12 @@
+[Unit]
+Description=Prevent suspend while SSH is active
+After=network.target ssh.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ssh-sleep-inhibit.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
